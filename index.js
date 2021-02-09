@@ -71,6 +71,6 @@ app.get("/up-visitante/:id", function (req, res) {
     });
 });
 
-app.listen(3000, () => {
-    console.log("Servidor iniciado na porta 3000: http://localhost:3000");
+app.listen(8080, () => {
+    console.log("Servidor iniciado na porta 8080: http://localhost:8080");
 });
