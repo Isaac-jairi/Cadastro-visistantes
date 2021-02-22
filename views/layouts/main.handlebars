@@ -1,95 +1,54 @@
 <!DOCTYPE html>
 <html lang="pt">
 <style>
-    .margin-Top {
-        margin-top: 15px;
+
+
+    body {
+        
+        background-image:linear-gradient(rgba(217, 217, 217, 0.2) 0%,rgba(217, 217, 217, 0.2) 100%), url('/bgGT') , linear-gradient(rgba(217, 217, 217,1.0), rgba(217, 217, 217,1.0)) ;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size:  auto 100%;
+        background-position: center;
+    }   
+    
+
+    .tammax{
+        max-width: 350px;
     }
 
+    .container {    
+        display: flex;
+        justify-content: center;
+    }   
 
-
-    /* Style the Image Used to Trigger the Modal */
-    #myImg {
-        border-radius: 5px;
-        cursor: pointer;
-        transition: 0.3s;
-    }
-
-    #myImg:hover {
-        opacity: 0.7;
-    }
-
-    /* The Modal (background) */
+    /*modal*/
     .modal {
         display: none;
-        /* Hidden by default */
         position: fixed;
-        /* Stay in place */
-        z-index: 1;
-        /* Sit on top */
+        z-index: 5;
         padding-top: 100px;
-        /* Location of the box */
         left: 0;
         top: 0;
         width: 100%;
-        /* Full width */
         height: 100%;
-        /* Full height */
         overflow: auto;
-        /* Enable scroll if needed */
         background-color: rgb(0, 0, 0);
-        /* Fallback color */
         background-color: rgba(0, 0, 0, 0.9);
-        /* Black w/ opacity */
     }
-
-    /* Modal Content (Image) */
-    .modal-content {
-        margin: auto;
-        display: block;
-        width: 80%;
-        max-width: 700px;
-    }
-
-    /* Caption of Modal Image (Image Text) - Same Width as the Image */
-    #caption {
-        margin: auto;
-        display: block;
-        width: 80%;
-        max-width: 700px;
-        text-align: center;
-        color: #ccc;
-        padding: 10px 0;
-        height: 150px;
-    }
-
-    /* Add Animation - Zoom in the Modal */
     .modal-content,
     #caption {
         animation-name: zoom;
         animation-duration: 0.6s;
     }
-
     @keyframes zoom {
         from {
             transform: scale(0)
         }
-
         to {
             transform: scale(1)
         }
     }
-
-    /* The Close Button */
-    .close {
-        position: absolute;
-        top: 15px;
-        right: 35px;
-        color: #f1f1f1;
-        font-size: 40px;
-        font-weight: bold;
-        transition: 0.3s;
-    }
-
     .close:hover,
     .close:focus {
         color: #bbb;
@@ -97,13 +56,107 @@
         cursor: pointer;
     }
 
-    /* 100% Image Width on Smaller Screens */
-    @media only screen and (max-width: 700px) {
-        .modal-content {
-            width: 100%;
-        }
+    /*Navbar*/
+    .navbar {
+        width: 90%;
+        height: 60px;
+        margin: 10px auto 0px;
+        position: relative;
+        color: rgb(0, 0, 0);
+        font-size: 28px;
+        text-align: left;
+        background: #C1AB5F;
+    }
+    .navbar i {
+        position: absolute;
+    }
+    .navbar i:nth-child(1),
+    .navbar i:nth-child(2) {
+        position: absolute;
+        left: -13px;
+        bottom: -1px;
+        z-index: -1;
+        border-bottom: 20px solid #423B20;
+        border-left: 20px solid transparent;
+        border-right: 20px solid transparent;
+        height: 0;
+        width: 50px;
+        transform: rotateZ(-90deg);
+    }
+    .navbar i:nth-child(2) {
+        bottom: -1px;
+        left: auto;
+        right: -13px;
+        border-bottom: 20px solid #423B20;
+        border-left: 20px solid transparent;
+        border-right: 20px solid transparent;
+        height: 0;
+        width: 50px;
+        transform: rotateZ(90deg);
+    }
+    .navbar i:nth-child(3),
+    .navbar i:nth-child(5) {
+        bottom: -22px;
+        left: -42px;
+        z-index: -3;
+        border: 32px solid #827440;
+    }
+    .navbar i:nth-child(5) {
+        bottom: -22px;
+        left: auto;
+        right: -42px;
+        border: 32px solid #827440;
+    }
+    .navbar i:nth-child(6) {
+        z-index: -2;
+        bottom: -7px;
+        right: -13px;
+        border-bottom: 21px solid #C1AB5F;
+        border-left: 21px solid transparent;
+        border-right: 21px solid transparent;
+        height: 0;
+        width: 50px;
+        transform: rotateZ(90deg);
+    }
+    .navbar i:nth-child(7) {
+        z-index: -2;
+        bottom: -7px;
+        left: -13px;
+        border-bottom: 21px solid #C1AB5F;
+        border-left: 21px solid transparent;
+        border-right: 21px solid transparent;
+        height: 0;
+        width: 50px;
+        transform: rotateZ(-90deg);
+    }
+
+    /*botão*/
+    .btn_novoAviso {
+        z-index: 2;
+        position: absolute;
+        top: 22px;
+        right: 10%;
+        text-align: center;
+        text-decoration: none;
+        font-size: 22px;
+        transition-duration: 0.4s;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    .btn_novoAviso:hover {
+        background-color: #a6924d;
+    }
+    
+    .brand-controleAvisos {
+        color: black;
+        position: absolute;
+        top: 22px;
+        left: 7%;
+        font-size: 22px;
+        text-align:center;
     }
 </style>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -112,7 +165,7 @@
 </head>
 
 <body>
-    
+
     {{{body}}}
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>

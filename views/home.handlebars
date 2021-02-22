@@ -1,69 +1,172 @@
-<nav class="navbar navbar-expand-lg navbar-light " style="background-color: #c2dff5;">
+{{!-- <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #c2dff5;">
     <a class="navbar-brand navpadding" href="#">Controle de Avisos</a>
     <ul class="navbar-nav">
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown">Novo Aviso</a>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Aviso Geral</a>
+                <a class="dropdown-item" data-toggle="modal" data-target="#modalAvisoGeral">Aviso Geral</a>
                 <a class="dropdown-item" data-toggle="modal" data-target="#modalVisitantes">Visitante</a>
-                <a class="dropdown-item" href="#">Carta de Recomendação</a>
-                <a class="dropdown-item" href="#">Carta de Mudança</a>
+                <hr class="dropdown-divider">
                 <a class="dropdown-item" href="#">Pedido de Oração</a>
                 <a class="dropdown-item" href="#">Pedido de Palavra</a>
                 <a class="dropdown-item" href="#">Pedido de Louvor</a>
                 <a class="dropdown-item" href="#">Apresentação de Crianças</a>
+                <a class="dropdown-item" href="#">Carta de Recomendação</a>
+                <a class="dropdown-item" href="#">Carta de Mudança</a>
 
             </div>
         </li>
     </ul>
-</nav>
+</nav> --}}
 
-<div class="container margin-Top">
+<div class="navbar">
+
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+</div>
+<p class="brand-controleAvisos ">Controle de Avisos</a>
+<div class="dropdown-menu">
+    <a class="dropdown-item" data-toggle="modal" data-target="#modalAvisoGeral">Aviso Geral</a>
+    <a class="dropdown-item" data-toggle="modal" data-target="#modalVisitantes">Visitante</a>
+    <hr class="dropdown-divider">
+    <a class="dropdown-item" data-toggle="modal" data-target="#modalAniversariantes">Aniversariante</a>
+    <a class="dropdown-item" href="#">Pedido de Oração</a>
+    <a class="dropdown-item" href="#">Pedido de Palavra</a>
+    <a class="dropdown-item" href="#">Pedido de Louvor</a>
+    <a class="dropdown-item" href="#">Apresentação de Crianças</a>
+    <a class="dropdown-item" href="#">Carta de Recomendação</a>
+    <a class="dropdown-item" href="#">Carta de Mudança</a>
+    
+</div>
+<a class="btn_novoAviso " data-toggle="dropdown">Novo Aviso</a>
+
+<div class="container">
     <div class="card-deck" id="deck">
-        {{#each visitantes}}
 
-        <div class="col-12-md ">
+        {{#each visitantes}}
+        <div class="col-12-md tammax" style="margin-top: 35px; " >
             {{#if apresentado}}
             <div class="card mb-2 text-white bg-success">
             {{else}}
             <div class="card mb-2 text-white bg-danger">
-            {{/if}}
+                {{/if}}
                 <h5 class="card-header ">Visitante </h5>
                 <div class="card-body">
                     <p class="car-text">Nome: {{nome}} </p>
                     <p class="car-text">Vem de: {{procedencia}}</p>
-
+                    <p class="car-text">Convidado de: {{convidante}} </p>
                     <a href="/up-visitante/{{id}}/"><button class="btn btn-dark">Apresentado</button></a>
-
                     <a href="/del-visitante/{{id}}/"><button class="btn btn-dark">Apagar</button></a>
                 </div>
             </div>
         </div>
         {{/each}}
+
+        {{#each avisoGeral}}
+        <div class="col-12-md tammax" style="margin-top: 35px;">
+            {{#if apresentado}}
+            <div class="card mb-2 text-white bg-success">
+            {{else}}
+            <div class="card mb-2 text-white bg-danger">
+            {{/if}}
+                <h5 class="card-header">Aviso Geral </h5>
+                <div class="card-body">
+                    <p class="car-text">Aviso: {{aviso}}</p>
+                    <p class="car-text">Quem avisa: {{avisador}} </p>
+                    <a href="/up-avisoGeral/{{id}}/"><button class="btn btn-dark">Apresentado</button></a>
+                    <a href="/del-avisoGeral/{{id}}/"><button class="btn btn-dark">Apagar</button></a>
+                    </div>
+                </div>
+        </div>
+        {{/each}}
     </div>
 </div>
 
+<div class="modal fade" id="modalVisitantes" tabindex="-1" aria-labelledby="modalVisitanteslLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" >Visistantes</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-group" action="/add-visitante" method="POST">
+                            <label fo="labelnomevisitante">Nome</label>
+                            <input id="labelnomevisitante" type="text" class="form-control" name="nome"><br><br>
 
-<div class="modal fade" id="modalVisitantes" tabindex="-1" aria-labelledby="modalVisitanteslLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal Visistantes</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                            <label>Procedencia</label>
+                            <input type="text" class="form-control" name="procedencia"><br><br>
+
+                            <label>Convidado de</label>
+                            <input type="text" class="form-control" name="convidante"><br><br>
+
+                            <button type="submit" class="btn btn-primary mb-2">Cadastrar</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-                <form class="form-group" action="/add-visitante" method="POST">
-                    <label fo="labelnomevisitante">Nome</label>
-                    <input id="labelnomevisitante" type="text" class="form-control" name="nome"><br><br>
+</div>
 
-                    <label>Procedencia</label>
-                    <input type="text" class="form-control" name="procedencia"><br><br>
+<div class="modal fade" id="modalAvisoGeral" tabindex="-2" aria-labelledby="modalAvisoGeralLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" >Aviso Geral</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-group" action="/add-avisoGeral" method="POST">
+                            <label>Aviso: </label>
+                            <input type="text" class="form-control" name="avisoGeral"><br><br>
 
-                    <button type="submit" class="btn btn-primary mb-2">Cadastrar</button>
-                </form>
+                            <label>Quem avisa: </label>
+                            <input type="text" class="form-control" name="avisanteGeral"><br><br>
+
+                            <button type="submit" class="btn btn-primary mb-2">Cadastrar</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
+</div>
+
+<div class="modal fade" id="modalAniversariantes" tabindex="-2" aria-labelledby="modalAniversariantes"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" >Aniversariante</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-group" action="/add-avisoGeral" method="POST">
+                            <label>Nome aniversariante: </label>
+                            <input type="text" class="form-control" name="nomeAniversariante"><br><br>
+
+                            <label>Data do Aniversario: </label>
+                            <input type="text" class="form-control" name="dataAniversario"><br><br>
+
+                            <label>Quem felicita:  </label>
+                            <input type="text" class="form-control" name="felicitador"><br><br>
+
+                            <button type="submit" class="btn btn-primary mb-2" >Cadastrar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+</div>
+
+
 </div>
