@@ -1,8 +1,0 @@
-create database nomedatabase
-
-create table nometabela
-
-usa nomedatabase
-
-inset into nometabela (altura, idade, etc) values (1.65,20, etc), (1.8,22, etc)
-
