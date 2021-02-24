@@ -31,6 +31,7 @@ connection.connect(function (err) {
     }
 });
 
+
 path = require('path')
 multer = require('multer');
 let storage = multer.diskStorage({
@@ -44,7 +45,32 @@ let storage = multer.diskStorage({
 let upload = multer({ storage: storage });
 
 
-//adicionar mudanca
+//pag inicial
+app.get("/", function (req, res) {
+    connection.query("select * from visitantes", function (err, results) {
+        if (err) {
+            console.log("erro select visitantes " + err);
+        } else {
+            connection.query("select * from avisos_gerais", function (err, results1) {
+                if (err) {
+                    console.log("erro select avisos_gerais " + err);
+                } else {
+                    connection.query("select * from carta_mudanca", function (err, results2) {
+                        if (err) {
+                            console.log("erro select from carta_mudanca");
+                        } else {
+                            res.render("home", { visitantes: results, avisoGeral: results1, mudanca: results2 });
+                        }
+                    });
+                }
+            });
+        }
+    });
+});
+
+
+
+//adicionar carta_mudanca
 app.post('/uploadCartaMudanca', upload.single('cartaMudanca'), function (req, res) {
     if (!req.file) {
         console.log("No file received");
@@ -92,7 +118,7 @@ app.get("/del-avisoGeral/:id", function (req, res) {
     connection.query("delete from avisos_gerais where id=?; SET @count = 0; UPDATE `avisos_gerais` SET `avisos_gerais`.`id` = @count:= @count + 1", [req.params.id]);
     res.redirect("/");
 });
-//deletar mudanca
+//deletar carta_mudanca
 app.get("/del-mudanca/:id", function (req, res) {
     connection.query("select * from carta_mudanca where id=?", [req.params.id], function (err, result) {
         if (err) {
@@ -114,7 +140,7 @@ app.get("/del-mudanca/:id", function (req, res) {
 });
 
 
-//visualizar mudanca
+//visualizar carta_mudanca
 app.get("/viewmudanca/:id", function (req, res) {
     connection.query("select * from carta_mudanca where id=?", [req.params.id], function (err, result) {
         if (err) {
@@ -126,7 +152,7 @@ app.get("/viewmudanca/:id", function (req, res) {
 });
 
 
-//marcar como apresentado mudanca
+//marcar como apresentado carta_mudanca
 app.get("/up-mudanca/:id", function (req, res) {
 
     connection.query("update carta_mudanca set apresentado = ? where id= ?", [1, req.params.id], function (err, results) {
@@ -170,30 +196,7 @@ app.get("/bgGT", function (rec, res) {
 });
 
 
-//pag inicial
-app.get("/", function (req, res) {
-    connection.query("select * from visitantes", function (err, results) {
-        if (err) {
-            console.log("erro select visitantes " + err);
-        } else {
-            connection.query("select * from avisos_gerais", function (err, results1) {
-                if (err) {
-                    console.log("erro select avisos_gerais " + err);
-                } else {
-                    connection.query("select * from carta_mudanca", function (err, results2) {
-                        if (err) {
-                            console.log("erro select from carta_mudanca");
-                        } else {
-                            res.render("home", { visitantes: results, avisoGeral: results1, mudanca: results2 });
-                        }
-                    });
-                }
-            });
-        }
-    });
-});
-
 
 app.listen(8080, () => {
-    console.log("Servidor iniciado na porta 8080: http://localhost:8080");
+    console.log("http://localhost:8080");
 });
