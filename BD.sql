@@ -27,3 +27,10 @@ CREATE TABLE `visitantes` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+CREATE TABLE `controle_avisos`.`pedido_oracao` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nomePedinte` VARCHAR(100) NULL,
+  `nomeFavorecido` VARCHAR(100) NULL,
+  `apresentado` TINYINT NULL DEFAULT '0',
+  `observacoes` VARCHAR(1000) NULL,
+  PRIMARY KEY (`id`))DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

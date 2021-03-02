@@ -59,7 +59,13 @@ app.get("/", function (req, res) {
                         if (err) {
                             console.log("erro select from carta_mudanca");
                         } else {
-                            res.render("home", { visitantes: results, avisoGeral: results1, mudanca: results2 });
+                            connection.query("select * from pedido_oracao", function (err, results3) {
+                                if (err) {
+                                    console.log("erro select from pedido_oracao");
+                                } else {
+                                    res.render("home", { visitantes: results, avisoGeral: results1, mudanca: results2, oracao: results3 });
+                                }
+                            });
                         }
                     });
                 }
@@ -106,16 +112,31 @@ app.post("/add-avisoGeral", function (req, res) {
         }
     });
 });
+//Adicionar Pedido De Oração
+app.post("/add-PedidoOracao", function (req, res) {
+    connection.query("SET @count = 0; UPDATE `pedido_oracao` SET `pedido_oracao`.`id` = @count:= @count + 1; insert into pedido_oracao (nomePedinte, nomeFavorecido, observacoes) values (?,?,?)", [req.body.nomePedinte, req.body.nomeFavorecido, req.body.observacoes], function (err) {
+        if (err) {
+            console.log("Erro ao inserir" + err.stack);
+            res.redirect("/");
+        } else {
+            res.redirect("/");
+        }
+    });
+});
 
-
+//deletar Pedido De Oração
+app.get("/del-pedidoOracao/:id", function (req, res) {
+    connection.query("delete from pedido_oracao where id=?; SET @count = 0; UPDATE `pedido_oracao` SET `pedido_oracao`.`id` = @count:= @count + 1;", [req.params.id]);
+    res.redirect("/");
+});
 //deletar visitante
 app.get("/del-visitante/:id", function (req, res) {
-    connection.query("delete from visitantes where id=?; SET @count = 0; UPDATE `visitantes` SET `visitantes`.`id` = @count:= @count + 1", [req.params.id]);
+    connection.query("delete from visitantes where id=?; SET @count = 0; UPDATE `visitantes` SET `visitantes`.`id` = @count:= @count + 1;", [req.params.id]);
     res.redirect("/");
 });
 //deletar aviso geral
 app.get("/del-avisoGeral/:id", function (req, res) {
-    connection.query("delete from avisos_gerais where id=?; SET @count = 0; UPDATE `avisos_gerais` SET `avisos_gerais`.`id` = @count:= @count + 1", [req.params.id]);
+    connection.query("delete from avisos_gerais where id=?; SET @count = 0; UPDATE `avisos_gerais` SET `avisos_gerais`.`id` = @count:= @count + 1;", [req.params.id]);
     res.redirect("/");
 });
 //deletar carta_mudanca
@@ -131,7 +152,7 @@ app.get("/del-mudanca/:id", function (req, res) {
             }); 
         }
     });
-    connection.query("delete from carta_mudanca where id=?; SET @count = 0; UPDATE `carta_mudanca` SET `carta_mudanca`.`id` = @count:= @count + 1", [req.params.id], function (err) {
+    connection.query("delete from carta_mudanca where id=?; SET @count = 0; UPDATE `carta_mudanca` SET `carta_mudanca`.`id` = @count:= @count + 1;", [req.params.id], function (err) {
         if (err) {
             console.log('erro delete from carta_mudanca');
         }
@@ -159,7 +180,6 @@ app.get("/up-mudanca/:id", function (req, res) {
         if (err) {
             console.log("erro update mudanca " + err.stack)
         } else {
-            console.log('changed ' + results.changedRows + ' rows');
             res.redirect("/");
         };
     });
@@ -171,7 +191,6 @@ app.get("/up-visitante/:id", function (req, res) {
         if (err) {
             console.log("erro update visitantes " + err.stack)
         } else {
-            console.log('changed ' + results.changedRows + ' rows');
             res.redirect("/");
         };
     });
@@ -183,12 +202,21 @@ app.get("/up-avisoGeral/:id", function (req, res) {
         if (err) {
             console.log("erro update avisos_gerais " + err.stack)
         } else {
-            console.log('changed ' + results.changedRows + ' rows');
             res.redirect("/");
         };
     });
 });
+//Marcar como Apresentado pedido de Oração
+app.get("/up-pedidoOracao/:id", function (req, res) {
 
+    connection.query("update pedido_oracao set apresentado = ? where id= ?", [1, req.params.id], function (err, results) {
+        if (err) {
+            console.log("erro update avisos_gerais " + err.stack)
+        } else {
+            res.redirect("/");
+        };
+    });
+});
 
 //background tela
 app.get("/bgGT", function (rec, res) {
