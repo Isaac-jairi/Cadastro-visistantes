@@ -13,14 +13,15 @@
 <div class="dropdown-menu">
     <a class="dropdown-item" data-toggle="modal" data-target="#modalAvisoGeral">Aviso Geral</a>
     <a class="dropdown-item" data-toggle="modal" data-target="#modalVisitantes">Visitante</a>
-    <a class="dropdown-item" data-toggle="modal" data-target="#modalMudanca">Carta de Mudança</a> 
+    <a class="dropdown-item" data-toggle="modal" data-target="#modalMudanca">Carta de Mudança</a>
+    <a class="dropdown-item" data-toggle="modal" data-target="#modalRecomendacao">Carta de Recomendação</a> 
     <a class="dropdown-item" data-toggle="modal" data-target="#modalPedidoOracao">Pedido de Oração</a>
+    <a class="dropdown-item" data-toggle="modal" data-target="#modalAniversariantes">Aniversariante</a>
+    <a class="dropdown-item" data-toggle="modal" data-target="#modalOportunidade">Pedido de Oportunidade</a>
     <hr class="dropdown-divider">
-    <a class="dropdown-item" >Aniversariante</a>
-    <a class="dropdown-item" >Pedido de Palavra</a>
-    <a class="dropdown-item" >Pedido de Louvor</a>
     <a class="dropdown-item" >Apresentação de Crianças</a>
-    <a class="dropdown-item">Carta de Recomendação</a>
+    <a class="dropdown-item" >Tratar comunhão</a>
+    <a class="dropdown-item" >Comunicado Especial</a>
     
 
 </div>
@@ -77,9 +78,28 @@
             <div class="card-body">
                 <p class="car-text">Nome: {{nome}}</p>
                 <p class="car-text">Vem de: {{procedencia}} </p>
-                <a href="/viewmudanca/{{id}}"><button class="btn btn-dark">Abrir carta</button></a> <br><br>
+                <a href="/view-mudanca/{{id}}"><button class="btn btn-dark">Abrir carta</button></a> <br><br>
                 <a href="/up-mudanca/{{id}}/"><button class="btn btn-dark">Apresentado</button></a>
                 <a href="/del-mudanca/{{id}}/"><button class="btn btn-dark">Apagar</button></a>
+            </div>
+            </div>
+        </div>
+        {{/each}}
+
+        {{#each recomendacao}}
+        <div class="col-12-md tammax" style="margin-top: 35px;">
+            {{#if apresentado}}
+            <div class="card mb-2 text-white bg-success">
+            {{else}}
+            <div class="card mb-2 text-white bg-danger">
+            {{/if}}
+            <h5 class="card-header">Carta de Recomendação</h5>
+            <div class="card-body">
+                <p class="car-text">Nome: {{nome}}</p>
+                <p class="car-text">Vem de: {{procedencia}} </p>
+                <a href="/view-recomendacao/{{id}}"><button class="btn btn-dark">Abrir carta</button></a> <br><br>
+                <a href="/up-recomendacao/{{id}}/"><button class="btn btn-dark">Apresentado</button></a>
+                <a href="/del-recomendacao/{{id}}/"><button class="btn btn-dark">Apagar</button></a>
             </div>
             </div>
         </div>
@@ -99,6 +119,45 @@
                 <p class="car-text">Observações: {{observacoes}} </p>
                 <a href="/up-pedidoOracao/{{id}}/"><button class="btn btn-dark">Apresentado</button></a>
                 <a href="/del-pedidoOracao/{{id}}/"><button class="btn btn-dark">Apagar</button></a>
+            </div>
+            </div>
+        </div>
+        {{/each}}
+
+        {{#each aniversariante}}
+        <div class="col-12-md tammax" style="margin-top: 35px;">
+            {{#if apresentado}}
+            <div class="card mb-2 text-white bg-success">
+            {{else}}
+            <div class="card mb-2 text-white bg-danger">
+            {{/if}}
+            <h5 class="card-header">Aniversariante</h5>
+            <div class="card-body">
+                <p class="car-text">Nome aniversariante: {{nomeAniversariante}}</p>
+                <p class="car-text">Data do Aniversario: {{dataAniversario}} </p>
+                <p class="car-text">Quem felicita: {{felicitador}} </p>
+                <p class="car-text">Observação: {{observacao}} </p>
+                <a href="/up-aniversariante/{{id}}/"><button class="btn btn-dark">Apresentado</button></a>
+                <a href="/del-aniversariante/{{id}}/"><button class="btn btn-dark">Apagar</button></a>
+            </div>
+            </div>
+        </div>
+        {{/each}}
+
+        {{#each oportunidade}}
+        <div class="col-12-md tammax" style="margin-top: 35px;">
+            {{#if apresentado}}
+            <div class="card mb-2 text-white bg-success">
+            {{else}}
+            <div class="card mb-2 text-white bg-danger">
+            {{/if}}
+            <h5 class="card-header">Pedido de Oportunidade</h5>
+            <div class="card-body">
+                <p class="car-text">Quem pede: {{nomePedinte}}</p>
+                <p class="car-text">Oportunidade Desejada: {{oportunidade}} </p>
+                <p class="car-text">Observações: {{observacoes}} </p>
+                <a href="/up-PedidoOportunidade/{{id}}/"><button class="btn btn-dark">Apresentado</button></a>
+                <a href="/del-PedidoOportunidade/{{id}}/"><button class="btn btn-dark">Apagar</button></a>
             </div>
             </div>
         </div>
@@ -169,7 +228,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form class="form-group" action="/add-avisoGeral" method="POST">
+                            <form class="form-group" action="/add-aniversariante" method="POST">
                                 <label>Nome aniversariante: </label>
                                 <input type="text" class="form-control" name="nomeAniversariante"><br><br>
 
@@ -178,6 +237,9 @@
 
                                 <label>Quem felicita: </label>
                                 <input type="text" class="form-control" name="felicitador"><br><br>
+
+                                <label>Observação: </label>
+                                <input type="text" class="form-control" name="observacao"><br><br>
 
                                 <button type="submit" class="btn btn-primary mb-2">Cadastrar</button>
                             </form>
@@ -235,6 +297,63 @@
                                 
                                 <label>Observações: </label>
                                 <input type="text" class="form-control" name="observacoes"><br><br>
+
+                                <button type="submit" class="btn btn-primary mb-2">Cadastrar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+</div>
+
+<div class="modal fade" id="modalOportunidade" tabindex="-2" aria-labelledby="modalOportunidade" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Pedido De Oportunidade</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-group" action="/add-PedidoOportunidade"
+                                method="POST">
+                                <label>Quem pede: </label>
+                                <input type="text" class="form-control" name="nomePedinte"><br><br>
+
+                                <label>Oportunidade desejada: </label>
+                                <input type="text" class="form-control" name="oportunidade"><br><br>
+                                
+                                <label>Observações: </label>
+                                <input type="text" class="form-control" name="observacoes"><br><br>
+
+                                <button type="submit" class="btn btn-primary mb-2">Cadastrar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+</div>
+
+<div class="modal fade" id="modalRecomendacao" tabindex="-2" aria-labelledby="modalRecomendacao" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Carta de Recomendação</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-group" action="/uploadCartaRecomendacao" enctype="multipart/form-data"
+                                method="POST">
+                                <label>Nome: </label>
+                                <input type="text" class="form-control" name="nomeRecomendacao"><br><br>
+
+                                <label>Vindo de: </label>
+                                <input type="text" class="form-control" name="procedenciaRecomendacao"><br><br>
+
+                                <label for="cartaRecomendacaoFile">Foto da Carta: </label>
+                                <input type="file" name="cartaRecomendacao" id="cartaRecomendacao"
+                                    class="form-control-file"><br><br>
 
                                 <button type="submit" class="btn btn-primary mb-2">Cadastrar</button>
                             </form>
