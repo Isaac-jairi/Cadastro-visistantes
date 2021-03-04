@@ -213,7 +213,7 @@ app.post("/add-comunicado", function (req, res) {
             console.log("Erro ao inserir Comunicado Especial " + err.stack);
             res.redirect("/");
         } else {
-            console.log("Adicionado visitante ")
+            console.log("Adicionado Comunicado Especial ")
             res.redirect("/");
         }
     });
