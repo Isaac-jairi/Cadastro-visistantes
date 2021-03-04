@@ -1,4 +1,6 @@
 CREATE DATABASE `controle_avisos` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+
+
 CREATE TABLE `aniversariantes` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nomeAniversariante` varchar(45) DEFAULT NULL,
@@ -39,6 +41,15 @@ CREATE TABLE `carta_recomendacao` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+CREATE TABLE `comunicado_especial` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `comunicado` varchar(1000) DEFAULT NULL,
+  `remetente` varchar(45) DEFAULT NULL,
+  `destinatario` varchar(45) DEFAULT NULL,
+  `apresentado` tinyint DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 CREATE TABLE `pedido_oportunidade` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nomePedinte` varchar(45) DEFAULT NULL,
@@ -46,7 +57,7 @@ CREATE TABLE `pedido_oportunidade` (
   `observacoes` varchar(100) DEFAULT NULL,
   `apresentado` tinyint DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `pedido_oracao` (
   `id` int NOT NULL AUTO_INCREMENT,
