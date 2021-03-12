@@ -405,3 +405,14 @@
                     </div>
                 </div>
 </div>
+
+<script>
+var eventSource = new EventSource("/sse")
+    eventSource.onmessage = function(e) {   
+        location.reload(); 
+    }
+    //eventSource.addEventListener("message", function(e){
+    //   location.reload(); 
+    //    console.log(e.data)
+    //})
+</script>

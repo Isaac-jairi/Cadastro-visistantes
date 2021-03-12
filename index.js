@@ -44,6 +44,46 @@ let storage = multer.diskStorage({
 });
 let upload = multer({ storage: storage });
 
+const MySQLEvents = require('@rodrigogs/mysql-events');
+const instance = new MySQLEvents(connection, {
+    startAtEnd: true
+  });
+  instance.start();
+  instance.addTrigger({
+    name: 'Monitoramento',
+    expression: '*',
+    onEvent: (event) => {
+        versaoGlobal++
+        console.log("versaoGlobal++ : " + versaoGlobal);
+    },
+});
+
+var versaoGlobal = 0
+var versaoLocal = 0
+
+app.get("/sse", (req, res) => {
+    res.writeHead(200, {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Access-Control-Allow-Origin': '*',
+        'Connection': 'keep-alive'
+      });
+    
+
+    var timer = setInterval(function(){
+        if (versaoLocal < versaoGlobal) {
+            console.log(versaoGlobal, versaoLocal); 
+            res.write('data: \n\n')
+            versaoLocal = versaoGlobal
+        }
+    }, 500) 
+    
+
+    req.on('close', function(){
+        clearInterval(timer);
+      });   
+
+   });
 
 //pag inicial
 app.get("/", function (req, res) {
@@ -115,7 +155,7 @@ app.post('/uploadCartaRecomendacao', upload.single('cartaRecomendacao'), functio
         res.redirect("/");
     } else {
         console.log('Carta de Recomendação recebida');
-        connection.query("insert into carta_recomendacao (nome, procedencia, nomearquivo, tipoarquivo, tamanhoarquivo) values(?,?,?,?,?)", [req.body.nomeRecomendacao, req.body.procedenciaRecomendacao, req.file.filename, req.file.mimetype, req.file.size], function (err, result) {
+        connection.query("SET @count = 0; UPDATE `carta_recomendacao` SET `carta_recomendacao`.`id` = @count:= @count + 1; insert into carta_recomendacao (nome, procedencia, nomearquivo, tipoarquivo, tamanhoarquivo) values(?,?,?,?,?)", [req.body.nomeRecomendacao, req.body.procedenciaRecomendacao, req.file.filename, req.file.mimetype, req.file.size], function (err, result) {
             if (err) {
                 console.log("Erro ao inserir carta de Recomendação " + err)
                 res.redirect("/");
@@ -134,7 +174,7 @@ app.post('/uploadCartaMudanca', upload.single('cartaMudanca'), function (req, re
         res.redirect("/");
     } else {
         console.log('Carta de Mudanca recebida');
-        connection.query("insert into carta_mudanca (nome, procedencia, nomearquivo, tipoarquivo, tamanhoarquivo) values(?,?,?,?,?)", [req.body.nomeMudanca, req.body.procedenciaMudanca, req.file.filename, req.file.mimetype, req.file.size], function (err, result) {
+        connection.query("SET @count = 0; UPDATE `carta_mudanca` SET `carta_mudanca`.`id` = @count:= @count + 1; insert into carta_mudanca (nome, procedencia, nomearquivo, tipoarquivo, tamanhoarquivo) values(?,?,?,?,?)", [req.body.nomeMudanca, req.body.procedenciaMudanca, req.file.filename, req.file.mimetype, req.file.size], function (err, result) {
             if (err) {
                 console.log("Erro ao inserir carta de Mudanca " + err)
                 res.redirect("/");
@@ -148,7 +188,7 @@ app.post('/uploadCartaMudanca', upload.single('cartaMudanca'), function (req, re
 });
 //adicionar visitante
 app.post("/add-visitante", function (req, res) {
-    connection.query("insert into visitantes (nome, procedencia, convidante) values (?,?,?)", [req.body.nome, req.body.procedencia, req.body.convidante], function (err) {
+    connection.query("insert into visitantes (nome, procedencia, convidante) values (?,?,?); SET @count = 0; UPDATE `visitantes` SET `visitantes`.`id` = @count:= @count + 1;", [req.body.nome, req.body.procedencia, req.body.convidante], function (err) {
         if (err) {
             console.log("Erro ao inserir" + err.stack);
             res.redirect("/");
@@ -160,7 +200,7 @@ app.post("/add-visitante", function (req, res) {
 });
 //adicionar Aniversariante
 app.post("/add-aniversariante", function (req, res) {
-    connection.query("insert into aniversariantes (nomeAniversariante, dataAniversario, felicitador, observacao) values (?,?,?,?)", [req.body.nomeAniversariante, req.body.dataAniversario, req.body.felicitador, req.body.observacao], function (err) {
+    connection.query("insert into aniversariantes (nomeAniversariante, dataAniversario, felicitador, observacao) values (?,?,?,?); SET @count = 0; UPDATE `aniversariantes` SET `aniversariantes`.`id` = @count:= @count + 1; ", [req.body.nomeAniversariante, req.body.dataAniversario, req.body.felicitador, req.body.observacao], function (err) {
         if (err) {
             console.log("Erro ao inserir" + err.stack);
             res.redirect("/");
@@ -172,7 +212,7 @@ app.post("/add-aniversariante", function (req, res) {
 });
 //adicionar aviso geral
 app.post("/add-avisoGeral", function (req, res) {
-    connection.query("insert into avisos_gerais (aviso, avisador) values (?,?)", [req.body.avisoGeral, req.body.avisanteGeral], function (err) {
+    connection.query("insert into avisos_gerais (aviso, avisador) values (?,?); SET @count = 0; UPDATE `avisos_gerais` SET `avisos_gerais`.`id` = @count:= @count + 1; ", [req.body.avisoGeral, req.body.avisanteGeral], function (err) {
         if (err) {
             console.log("Erro nao inserir" + err.stack);
             res.redirect("/");
@@ -184,7 +224,7 @@ app.post("/add-avisoGeral", function (req, res) {
 });
 //Adicionar Pedido De Oração
 app.post("/add-PedidoOracao", function (req, res) {
-    connection.query("SET @count = 0; UPDATE `pedido_oracao` SET `pedido_oracao`.`id` = @count:= @count + 1; insert into pedido_oracao (nomePedinte, nomeFavorecido, observacoes) values (?,?,?)", [req.body.nomePedinte, req.body.nomeFavorecido, req.body.observacoes], function (err) {
+    connection.query("insert into pedido_oracao (nomePedinte, nomeFavorecido, observacoes) values (?,?,?); SET @count = 0; UPDATE `pedido_oracao` SET `pedido_oracao`.`id` = @count:= @count + 1; ", [req.body.nomePedinte, req.body.nomeFavorecido, req.body.observacoes], function (err) {
         if (err) {
             console.log("Erro ao inserir" + err.stack);
             res.redirect("/");
@@ -196,7 +236,7 @@ app.post("/add-PedidoOracao", function (req, res) {
 });
 //Adicionar Pedido de Oportunidade
 app.post("/add-PedidoOportunidade", function (req, res) {
-    connection.query("SET @count = 0; UPDATE `pedido_oportunidade` SET `pedido_oportunidade`.`id` = @count:= @count + 1; insert into pedido_oportunidade (nomePedinte, oportunidade, observacoes) values (?,?,?)", [req.body.nomePedinte, req.body.oportunidade, req.body.observacoes], function (err) {
+    connection.query("insert into pedido_oportunidade (nomePedinte, oportunidade, observacoes) values (?,?,?); SET @count = 0; UPDATE `pedido_oportunidade` SET `pedido_oportunidade`.`id` = @count:= @count + 1; ", [req.body.nomePedinte, req.body.oportunidade, req.body.observacoes], function (err) {
         if (err) {
             console.log("Erro ao inserir Pedido de Oportunidade " + err.stack);
             res.redirect("/");
@@ -208,12 +248,12 @@ app.post("/add-PedidoOportunidade", function (req, res) {
 });
 //adicionar Comunicado Especial
 app.post("/add-comunicado", function (req, res) {
-    connection.query("insert into comunicado_especial (comunicado, remetente, destinatario) values (?,?,?)", [req.body.comunicado, req.body.remetente, req.body.destinatario], function (err) {
+    connection.query("insert into comunicado_especial (comunicado, remetente, destinatario) values (?,?,?); SET @count = 0; UPDATE `comunicado_especial` SET `comunicado_especial`.`id` = @count:= @count + 1; ", [req.body.comunicado, req.body.remetente, req.body.destinatario], function (err) {
         if (err) {
             console.log("Erro ao inserir Comunicado Especial " + err.stack);
             res.redirect("/");
         } else {
-            console.log("Adicionado Comunicado Especial ")
+            console.log("Adicionado visitante ")
             res.redirect("/");
         }
     });
@@ -433,11 +473,11 @@ app.get("/up-pedidoOracao/:id", function (req, res) {
     });
 });
 
+
 //background tela
 app.get("/bgGT", function (rec, res) {
     res.sendFile(__dirname + "/views/Style/bg.png");
 });
-
 
 
 app.listen(8080, () => {
